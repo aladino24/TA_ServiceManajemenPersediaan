@@ -85,6 +85,32 @@ class MasterStockController extends Controller
         }
     }
 
+    public function detailStock($fc_stockcode, $fc_barcode){
+        $stockcodeDecode = base64_decode($fc_stockcode);
+        $barcodeDecode = base64_decode($fc_barcode);
+        $user = Session::get('user');
+        $branch = $user['user']['branch'];
+
+        $stock = Stock::where('fc_stockcode', $stockcodeDecode)
+        ->where('fc_barcode', $barcodeDecode)
+        ->where('fc_branch', $branch)
+        ->first();
+
+        if($stock){
+            return response()->json([
+                'status' => 200,
+                'message' => 'Berhasil menampilkan detail stock',
+                'data' => $stock
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'message' => 'Oops! Data stock tidak ditemukan',
+            'data' => null
+        ], 404);
+
+    }
     
     public function updateStock(Request $request){
         // validator
@@ -177,6 +203,66 @@ class MasterStockController extends Controller
                 'data' => $th->getMessage()
             ], 500);
         }
+    }
+
+
+    public function holdStock(Request $request, $fc_barcode){
+        $decode_fc_barcode = base64_decode($fc_barcode);
+        $user = Session::get('user');
+        $branch = $user['user']['branch'];
+
+        $fc_hold = $request->fc_hold;
+
+        $stock = Stock::where('fc_barcode', $decode_fc_barcode)
+        ->where('fc_branch', $branch)
+        ->first();
+
+        $update_status = $stock->update([
+            'fc_hold' => $fc_hold,
+        ]);
+
+        if($update_status){
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Stock berhasil di hold',
+                'data' => $update_status
+            ], 200);
+        }
+
+        return [
+            'status' => 300,
+            'message' => 'Data gagal di hold'
+        ];
+    }
+
+
+    public function unholdStock(Request $request, $fc_barcode){
+        $decode_fc_barcode = base64_decode($fc_barcode);
+        $user = Session::get('user');
+        $branch = $user['user']['branch'];
+
+        $fc_hold = $request->fc_hold;
+
+        $stock = Stock::where('fc_barcode', $decode_fc_barcode)
+        ->where('fc_branch', $branch)
+        ->first();
+
+        $update_status = $stock->update([
+            'fc_hold' => $fc_hold,
+        ]);
+
+        if($update_status){
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Stock berhasil di unhold',
+                'data' => $update_status
+            ], 200);
+        }
+
+        return [
+            'status' => 300,
+            'message' => 'Data gagal di unhold'
+        ];
     }
 
 }
