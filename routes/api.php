@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\DataMaster\MasterStockController;
 use App\Http\Controllers\API\DataMaster\MasterBrandController;
+use App\Http\Controllers\API\DataMaster\DataMasterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Data Master Stock
+Route::get('/get-unity', [DataMasterController::class, 'getUnity']);
 
 Route::group(['middleware' => 'check-authentication'], function () {
     Route::group(['prefix' => 'master'], function () {
