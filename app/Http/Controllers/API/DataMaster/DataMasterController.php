@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 class DataMasterController extends Controller
 {
+    public function getBrand(Request $request){
+        $data = Brand::select('fc_brand')->groupBy('fc_brand')->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menampilkan data brand',
+            'data' => $data,
+        ], 200);
+    }
+    
     public function getUnity(){
         $data = TransaksiType::get();
         // api formatter
@@ -26,6 +35,16 @@ class DataMasterController extends Controller
             'success' => true,
             'message' => 'Berhasil menampilkan data group by brand',
             'data' => $data,
+        ], 200);
+    }
+
+    public function getSubgroupByGroup(Request $request){
+        $data = Brand::select('fc_subgroup')->where('fc_group', $request->fc_group)->groupBy('fc_subgroup')->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menampilkan data subgroup by group',
+            'data' => $data
         ], 200);
     }
 }

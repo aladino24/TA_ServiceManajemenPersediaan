@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Data Master Stock
+Route::get('/get-brand', [DataMasterController::class, 'getBrand']);
 Route::get('/get-unity', [DataMasterController::class, 'getUnity']);
 Route::get('/stock-group-by-unity', [DataMasterController::class, 'getGroupByBrand']);
+Route::get('/stock-subgroup-by-group', [DataMasterController::class, 'getSubgroupByGroup']);
 
 Route::group(['middleware' => 'check-authentication'], function () {
     Route::group(['prefix' => 'master'], function () {
