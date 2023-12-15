@@ -14,7 +14,12 @@ class DataMasterController extends Controller
         $model = 'App\\Models\\' . $model;
         $data = $model::where($where_field, $id)->get();
 
-        return ApiFormatter::getResponse($data);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Data berhasil ditampilkan',
+                'data' => $data
+            ], 200);
     }
 
     public function getBrand(Request $request){
