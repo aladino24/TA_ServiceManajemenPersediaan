@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class DataMasterController extends Controller
 {
+    // template
+    public function get_data_where_field_id_get($model, $where_field, $id){
+        $model = 'App\\Models\\' . $model;
+        $data = $model::where($where_field, $id)->get();
+
+        return ApiFormatter::getResponse($data);
+    }
+
     public function getBrand(Request $request){
         $data = Brand::select('fc_brand')->groupBy('fc_brand')->get();
         return response()->json([

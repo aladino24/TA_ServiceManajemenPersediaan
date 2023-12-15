@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Template Route
+Route::get('/get-data-where-field-id-get/{model}/{where_field}/{id}', [DataMasterController::class, 'get_data_where_field_id_get']);
 // Data Master Stock
 Route::get('/get-brand', [DataMasterController::class, 'getBrand']);
 Route::get('/get-unity', [DataMasterController::class, 'getUnity']);
