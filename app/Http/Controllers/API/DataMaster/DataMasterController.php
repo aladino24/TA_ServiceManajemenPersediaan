@@ -16,7 +16,7 @@ class DataMasterController extends Controller
 
         return response()->json(
             [
-                'status' => true,
+                'success' => true,
                 'message' => 'Data berhasil ditampilkan',
                 'data' => $data
             ], 200);
@@ -32,7 +32,7 @@ class DataMasterController extends Controller
     }
     
     public function getUnity(){
-        $data = TransaksiType::get();
+        $data = TransaksiType::where('fc_trx', 'UNITY')->get();
         // api formatter
         return response()->json([
             'success' => true,
