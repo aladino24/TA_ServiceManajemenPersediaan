@@ -30,7 +30,7 @@ Route::get('/stock-group-by-unity', [DataMasterController::class, 'getGroupByBra
 Route::get('/stock-subgroup-by-group', [DataMasterController::class, 'getSubgroupByGroup']);
 
 Route::group(['middleware' => 'check-authentication'], function () {
-    Route::group(['middleware' => 'cors'], function(){
+    // Route::group(['middleware' => 'cors'], function(){
         Route::group(['prefix' => 'master'], function () {
 
             // master stock
@@ -53,5 +53,5 @@ Route::group(['middleware' => 'check-authentication'], function () {
             // Route::put('stock/{id}', 'API\DataMaster\MasterStockController@updateStock');
             // Route::delete('stock/{id}', 'API\DataMaster\MasterStockController@deleteStock');
         });
-    });
+    // });
 });

@@ -34,7 +34,7 @@ class CheckAuthentication
     private function checkAuthentication($token){
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get('http://barracuda.my.id/api/check-token');
+        ])->get('http://127.0.0.1:8000/api/check-token');
 
         return $response->status() === 200;
     }
@@ -43,7 +43,7 @@ class CheckAuthentication
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get('http://barracuda.my.id/api/check-token');
+        ])->get('http://127.0.0.1:8000/api/check-token');
 
         return $response->json();
     }
