@@ -202,8 +202,10 @@ class MasterBrandController extends Controller
 
             if (!$brand) {
                 return response()->json([
+                    'success' => false,
                     'status' => 404,
                     'message' => 'Brand not found',
+                    'data' => null
                 ], 404);
             }
     
@@ -214,12 +216,14 @@ class MasterBrandController extends Controller
             $brand->delete();
     
             return response()->json([
+                'success' => true,
                 'status' => 200,
                 'message' => 'Berhasil menghapus data brand',
                 'data' => $brand
             ], 200);
         }catch(\Throwable $th){
             return response()->json([
+                'success' => false,
                 'status' => 500,
                 'message' => 'Oops! Terjadi kesalahan saat menghapus data brand',
                 'data' => $th->getMessage()
