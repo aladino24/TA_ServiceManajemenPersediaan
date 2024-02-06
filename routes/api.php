@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\DataMaster\MasterStockController;
 use App\Http\Controllers\API\DataMaster\MasterBrandController;
 use App\Http\Controllers\API\DataMaster\DataMasterController;
+use App\Http\Controllers\API\DataMaster\MasterBankAccController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,12 @@ Route::group(['middleware' => 'check-authentication'], function () {
             Route::post('brand', [MasterBrandController::class, 'createBrand']);
             Route::put('brand', [MasterBrandController::class, 'updateBrand']);
             Route::delete('brand/{id}', [MasterBrandController::class, 'deleteBrand']);
+
+
+            // Master Bank Acc
+            Route::get('bank-acc', [MasterBankAccController::class, 'getBankAcc']);
+            Route::post('bank-acc', [MasterBankAccController::class, 'createBankAcc']);
+
             // Route::get('stock/{id}', 'API\DataMaster\MasterStockController@getStockById');
             // Route::post('stock', 'API\DataMaster\MasterStockController@createStock');
             // Route::put('stock/{id}', 'API\DataMaster\MasterStockController@updateStock');
