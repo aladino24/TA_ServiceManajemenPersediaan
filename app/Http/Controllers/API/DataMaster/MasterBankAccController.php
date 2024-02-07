@@ -82,4 +82,58 @@ class MasterBankAccController extends Controller
         }
 
     }
+
+    public function updateBankAcc(Request $request){
+        $validator = Validator::make($request->all(), [
+            'fc_branch' => 'required',
+            'fc_divisioncode' => 'required',
+            'fv_bankname' => 'required',
+            'fc_bankcode' => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah data bank account',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $bankacc = BankAcc::where('id', $request->id)->first();
+
+        if(!$bankacc){
+            return response()->json([
+                'success' => false,
+                'message' => 'Data bank account tidak ditemukan',
+            ], 404);
+        }
+
+        try {
+            $bankacc->update([
+                'fc_divisioncode' => $request->fc_divisioncode,
+                'fc_branch' => $request->fc_branch,
+                'fv_bankname' => $request->fv_bankname,
+                'fc_bankcode' => $request->fc_bankcode,
+                'fc_banktype' => $request->fc_banktype,
+                'fv_bankbranch' => $request->fv_bankbranch,
+                'fv_bankusername' => $request->fv_bankusername,
+                'fv_bankaddress1' => $request->fv_bankaddress1,
+                'fv_bankaddress2' => $request->fv_bankaddress2,
+                'fl_bankhold' => $request->fl_bankhold,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data bank account',
+                'data' => $bankacc
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah data bank account',
+                'errors' => $th->getMessage(),
+            ], 500);
+        }
+        // dd($request->all());
+    }
 }
