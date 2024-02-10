@@ -55,6 +55,7 @@ Route::group(['middleware' => 'check-authentication'], function () {
             Route::get('bank-acc', [MasterBankAccController::class, 'getBankAcc']);
             Route::post('bank-acc', [MasterBankAccController::class, 'createBankAcc']);
             Route::put('bank-acc', [MasterBankAccController::class, 'updateBankAcc']);
+            Route::delete('bank-acc/{id}', [MasterBankAccController::class, 'deleteBankAcc']);
 
             // Route::get('stock/{id}', 'API\DataMaster\MasterStockController@getStockById');
             // Route::post('stock', 'API\DataMaster\MasterStockController@createStock');

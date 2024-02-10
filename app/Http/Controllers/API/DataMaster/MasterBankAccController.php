@@ -136,4 +136,31 @@ class MasterBankAccController extends Controller
         }
         // dd($request->all());
     }
+
+    public function deleteBankAcc($id){
+        $bankacc = BankAcc::where('id', $id)->first();
+
+        if(!$bankacc){
+            return response()->json([
+                'success' => false,
+                'message' => 'Data bank account tidak ditemukan',
+            ], 404);
+        }
+
+        try {
+            $bankacc->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data bank account',
+                'data' => $bankacc
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus data bank account',
+                'errors' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }
