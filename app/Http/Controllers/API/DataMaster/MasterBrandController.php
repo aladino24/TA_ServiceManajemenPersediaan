@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -65,7 +66,7 @@ class MasterBrandController extends Controller
 
         $user = Session::get('user');
         $branch = $user['user']['branch'];
-        $username = $user['user']['username'];
+        $name = $user['user']['username'];
 
         $cek_data = Brand::where([
             'fc_divisioncode' => $request->fc_divisioncode,
@@ -91,8 +92,8 @@ class MasterBrandController extends Controller
                 'fc_brand' => $request->fc_brand,
                 'fc_group' => $request->fc_group,
                 'fc_subgroup' => $request->fc_subgroup,
-                'created_by' => $username,
-                'updated_by' => $username,
+                'created_by' => $name,
+                'updated_by' => $name,
             ]);
 
             return response()->json([
@@ -111,16 +112,20 @@ class MasterBrandController extends Controller
 
 
     public function updateBrand(Request $request){
+        // Validasi input
         $validator = Validator::make($request->all(), [
+            'id' => 'required',
             'fc_divisioncode' => 'required',
             'fc_brand' => 'required',
             'fc_group' => 'required',
             'fc_subgroup' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return [
                 'status' => 300,
+                'success' => false,
+                'data' => $validator->errors(),
                 'message' => $validator->errors()->first()
             ];
         }
@@ -129,23 +134,33 @@ class MasterBrandController extends Controller
         $branch = $user['user']['branch'];
         $username = $user['user']['username'];
 
-        $cek_data = Brand::where([
-            'fc_divisioncode' => $request->fc_divisioncode,
-            'fc_branch' => $branch,
-            'fc_brand' => $request->fc_brand,
-            'fc_group' => $request->fc_group,
-            'fc_subgroup' => $request->fc_subgroup,
-            'deleted_at' => null,
-        ])->withTrashed()->count();
-        
-        if($cek_data > 0){
-            return [
-                'status' => 300,
-                'message' => 'Oops! Insert gagal karena data sudah ditemukan didalam sistem kami'
-            ];
-        }
+        try {
+            DB::beginTransaction();
 
-        try{
+            // Cek apakah data sudah ada
+            $cek_data = Brand::where([
+                'fc_divisioncode' => $request->fc_divisioncode,
+                'fc_branch' => $branch,
+                'fc_brand' => $request->fc_brand,
+                'fc_group' => $request->fc_group,
+                'fc_subgroup' => $request->fc_subgroup,
+                'deleted_at' => null,
+            ])->withTrashed()->count();
+
+            if ($cek_data > 0) {
+                DB::rollBack();
+
+                $response = [
+                    'status' => 300,
+                    'success' => false,
+                    'data' => $cek_data,
+                    'message' => 'Oops! Insert gagal karena data sudah ditemukan didalam sistem kami'
+                ];
+
+                return response()->json($response, 300);
+            }
+
+            // Update data brand
             $brand = Brand::where([
                 'id' => $request->id,
             ])->update([
@@ -157,14 +172,21 @@ class MasterBrandController extends Controller
                 'updated_by' => $username,
             ]);
 
+            DB::commit();
+
             return response()->json([
                 'status' => 200,
+                'success' => true,
                 'message' => 'Berhasil mengubah data brand',
                 'data' => $brand
             ], 200);
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
             return response()->json([
                 'status' => 500,
+                'success' => false,
                 'message' => 'Oops! Terjadi kesalahan saat mengubah data brand',
                 'data' => $th->getMessage()
             ], 500);
@@ -180,8 +202,10 @@ class MasterBrandController extends Controller
 
             if (!$brand) {
                 return response()->json([
+                    'success' => false,
                     'status' => 404,
                     'message' => 'Brand not found',
+                    'data' => null
                 ], 404);
             }
     
@@ -192,12 +216,14 @@ class MasterBrandController extends Controller
             $brand->delete();
     
             return response()->json([
+                'success' => true,
                 'status' => 200,
                 'message' => 'Berhasil menghapus data brand',
                 'data' => $brand
             ], 200);
         }catch(\Throwable $th){
             return response()->json([
+                'success' => false,
                 'status' => 500,
                 'message' => 'Oops! Terjadi kesalahan saat menghapus data brand',
                 'data' => $th->getMessage()

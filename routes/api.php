@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\DataMaster\MasterStockController;
 use App\Http\Controllers\API\DataMaster\MasterBrandController;
 use App\Http\Controllers\API\DataMaster\DataMasterController;
+use App\Http\Controllers\API\DataMaster\MasterBankAccController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,7 @@ Route::get('/stock-group-by-unity', [DataMasterController::class, 'getGroupByBra
 Route::get('/stock-subgroup-by-group', [DataMasterController::class, 'getSubgroupByGroup']);
 
 Route::group(['middleware' => 'check-authentication'], function () {
-    Route::group(['middleware' => 'cors'], function(){
+    // Route::group(['middleware' => 'cors'], function(){
         Route::group(['prefix' => 'master'], function () {
 
             // master stock
@@ -48,10 +49,18 @@ Route::group(['middleware' => 'check-authentication'], function () {
             Route::post('brand', [MasterBrandController::class, 'createBrand']);
             Route::put('brand', [MasterBrandController::class, 'updateBrand']);
             Route::delete('brand/{id}', [MasterBrandController::class, 'deleteBrand']);
+
+
+            // Master Bank Acc
+            Route::get('bank-acc', [MasterBankAccController::class, 'getBankAcc']);
+            Route::post('bank-acc', [MasterBankAccController::class, 'createBankAcc']);
+            Route::put('bank-acc', [MasterBankAccController::class, 'updateBankAcc']);
+            Route::delete('bank-acc/{id}', [MasterBankAccController::class, 'deleteBankAcc']);
+
             // Route::get('stock/{id}', 'API\DataMaster\MasterStockController@getStockById');
             // Route::post('stock', 'API\DataMaster\MasterStockController@createStock');
             // Route::put('stock/{id}', 'API\DataMaster\MasterStockController@updateStock');
             // Route::delete('stock/{id}', 'API\DataMaster\MasterStockController@deleteStock');
         });
-    });
+    // });
 });
