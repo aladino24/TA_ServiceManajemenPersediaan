@@ -4,6 +4,7 @@ use App\Http\Controllers\API\DataMaster\MasterStockController;
 use App\Http\Controllers\API\DataMaster\MasterBrandController;
 use App\Http\Controllers\API\DataMaster\DataMasterController;
 use App\Http\Controllers\API\DataMaster\MasterBankAccController;
+use App\Http\Controllers\API\Apps\PersediaanBarangController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,15 @@ Route::group(['middleware' => 'check-authentication'], function () {
             // Route::post('stock', 'API\DataMaster\MasterStockController@createStock');
             // Route::put('stock/{id}', 'API\DataMaster\MasterStockController@updateStock');
             // Route::delete('stock/{id}', 'API\DataMaster\MasterStockController@deleteStock');
+
+            // persediaan barang
+            
+        });
+
+        // prefix
+        Route::group(['prefix' => 'persediaan-barang'], function () {
+            // persediaan barang
+            Route::get('datatables-detail', [PersediaanBarangController::class, 'datatables_detail']);
         });
     // });
 });

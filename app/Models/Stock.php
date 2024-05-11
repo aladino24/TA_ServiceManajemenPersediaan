@@ -44,4 +44,9 @@ class Stock extends Model
     public function type_stock2(){
         return $this->belongsTo(TransaksiType::class, 'fc_typestock2', 'fc_kode')->withTrashed();
     }
+
+    public function invstore()
+    {
+        return $this->hasMany(Invstore::class, 'fc_stockcode', 'fc_stockcode');
+    }
 }
