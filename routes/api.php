@@ -5,6 +5,8 @@ use App\Http\Controllers\API\DataMaster\MasterBrandController;
 use App\Http\Controllers\API\DataMaster\DataMasterController;
 use App\Http\Controllers\API\DataMaster\MasterBankAccController;
 use App\Http\Controllers\API\Apps\PersediaanBarangController;
+use App\Http\Controllers\API\Apps\PemakaianBarangController;
+use App\Http\Controllers\API\Apps\PatientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +73,12 @@ Route::group(['middleware' => 'check-authentication'], function () {
         Route::group(['prefix' => 'persediaan-barang'], function () {
             // persediaan barang
             Route::get('datatables-detail', [PersediaanBarangController::class, 'datatables_detail']);
+            Route::get('datatables_detail_inventory/{fc_stockcode}', [PersediaanBarangController::class, 'datatables_detail_inventory']);
+        });
+
+        Route::group(['prefix' => 'pemakaian-barang'], function (){
+            Route::post('store-patient', [PatientController::class, 'store']);
+            Route::get('status-usage-master', [PemakaianBarangController::class, 'getStatusUsageMaster']);
         });
     // });
 });

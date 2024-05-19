@@ -24,4 +24,17 @@ class PersediaanBarangController extends Controller
             ->addIndexColumn()
             ->make(true);
     }
+
+
+    public function datatables_detail_inventory($fc_stockcode)
+    {
+        $user = Session::get('user');
+        $branch = $user['user']['branch'];
+        $decode_fc_stockcode = base64_decode($fc_stockcode);
+        $data = Invstore::with('stock')->where('fc_stockcode', $decode_fc_stockcode)->where('fc_branch', $branch)->get();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
 }
