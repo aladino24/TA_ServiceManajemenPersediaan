@@ -31,7 +31,7 @@ class PatientController extends Controller
                     'fc_patient_id' => IdGenerator::generate(['table' => 't_patient','field'=>'fc_patient_id', 'length' => 6, 'prefix' => date('y')]),
                     'fc_patient_name' => $request->fc_patient_name,
                     'fc_patient_gender' => $request->fc_patient_gender,
-                    'fn_patient_age' => $request->fd_patient_age,
+                    'fn_patient_age' => $request->fn_patient_age,
                     'fc_patient_address' => $request->fc_patient_address,
                     'fc_patient_phone' => $request->fc_patient_phone,
                 ]);

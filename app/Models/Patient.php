@@ -36,6 +36,17 @@ class Patient extends Model
     //     });
     // }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($patient) {
+            DB::transaction(function () use ($patient) {
+                $patient->usageMasters()->delete();
+            });
+        });
+    }
+
     public function usageMasters()
     {
         return $this->hasMany(UsageMaster::class, 'fc_patient_id', 'fc_patient_id');

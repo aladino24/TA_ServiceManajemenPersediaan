@@ -24,4 +24,10 @@ class Invstore extends Model
     }
     
 
+    // hidden
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
 }
