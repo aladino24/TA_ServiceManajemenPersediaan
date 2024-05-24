@@ -24,6 +24,17 @@ class UsageMaster extends Model
         'fv_description',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($usage) {
+            DB::transaction(function () use ($usage) {
+                $usage->usageDetails()->delete();
+            });
+        });
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'fc_patient_id', 'fc_patient_id');
