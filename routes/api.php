@@ -81,6 +81,7 @@ Route::group(['middleware' => 'check-authentication'], function () {
             Route::get('status-usage-master', [PemakaianBarangController::class, 'getStatusUsageMaster']);
             Route::delete('delete-usage-master/{fc_patient_id}', [PemakaianBarangController::class, 'deleteUsageMaster']);
             Route::get('detail-barang/{fc_barcode}', [PemakaianBarangController::class, 'getDetailBarang']);
+            Route::post('usage-detail', [PemakaianBarangController::class, 'createUsageDetail']);
         });
     // });
 });

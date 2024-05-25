@@ -68,7 +68,7 @@ class PemakaianBarangController extends Controller
     }
 
     public function createUsageDetail(Request $request){
-
+        // Validation of the request
         $validator = Validator::make($request->all(), [
             'fi_usage_id' => 'required',
             'fc_stockcode' => 'required',
@@ -76,21 +76,35 @@ class PemakaianBarangController extends Controller
             'fn_quantity_used' => 'required',
         ]);
 
-
         $user = Session::get('user');
         $userid = $user['user']['userid'];
+        $divisioncode = $user['user']['divisioncode'];
+        $branch = $user['user']['branch'];
 
         try {
             DB::beginTransaction();
-            UsageDetail::create([
+
+            $data = UsageDetail::create([
                 'fi_usage_id' => $request->fi_usage_id,
+                'divisioncode' => $divisioncode,
+                'branch' => $branch,
                 'fc_stockcode' => $request->fc_stockcode,
                 'fc_barcode' => $request->fc_barcode,
                 'fn_quantity_used' => $request->fn_quantity_used,
             ]);
+
             DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Detail barang berhasil ditambahkan.',
+                'data' => $data
+            ], 200);
+
         } catch (\Throwable $th) {
             DB::rollBack();
+            
+            // Returning the error response
             return response()->json([
                 'success' => false,
                 'error' => 'Gagal menambahkan detail barang.',
@@ -98,4 +112,5 @@ class PemakaianBarangController extends Controller
             ], 500);
         }
     }
+
 }
