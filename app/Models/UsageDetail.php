@@ -19,8 +19,18 @@ class UsageDetail extends Model
         'fn_quantity_used',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function usageMaster()
     {
         return $this->belongsTo(UsageMaster::class, 'fi_usage_id', 'fi_usage_id');
+    }
+
+    public function invstore()
+    {
+        return $this->hasOne(Invstore::class, 'fc_barcode', 'fc_barcode');
     }
 }

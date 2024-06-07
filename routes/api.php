@@ -7,6 +7,7 @@ use App\Http\Controllers\API\DataMaster\MasterBankAccController;
 use App\Http\Controllers\API\Apps\PersediaanBarangController;
 use App\Http\Controllers\API\Apps\PemakaianBarangController;
 use App\Http\Controllers\API\Apps\PatientController;
+use App\Http\Controllers\API\Apps\StockOpnameController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +83,16 @@ Route::group(['middleware' => 'check-authentication'], function () {
             Route::delete('delete-usage-master/{fc_patient_id}', [PemakaianBarangController::class, 'deleteUsageMaster']);
             Route::get('detail-barang/{fc_barcode}', [PemakaianBarangController::class, 'getDetailBarang']);
             Route::post('usage-detail', [PemakaianBarangController::class, 'createUsageDetail']);
+            Route::get('datatables-usage-detail/{fi_usage_id}', [PemakaianBarangController::class, 'getUsageDetail']);
+
+            // digunakan
+            Route::post('scanqr', [PemakaianBarangController::class, 'insert_scanqr']);
+            Route::get('new-scanqr', [PemakaianBarangController::class, 'getNewScanqr']);
+        });
+
+        Route::group(['prefix' => 'stock-opname'], function(){
+            Route::get('master', [StockOpnameController::class, 'index']);
+            Route::get('datatable-persediaan/{fc_warehousecode}', [StockOpnameController::class, 'get_datatables_persediaan']);
         });
     // });
 });
