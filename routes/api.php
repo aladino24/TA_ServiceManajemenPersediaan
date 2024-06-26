@@ -93,6 +93,20 @@ Route::group(['middleware' => 'check-authentication'], function () {
         Route::group(['prefix' => 'stock-opname'], function(){
             Route::get('master', [StockOpnameController::class, 'index']);
             Route::get('datatable-persediaan/{fc_warehousecode}', [StockOpnameController::class, 'get_datatables_persediaan']);
+            Route::post('master', [StockOpnameController::class, 'createStockopnameMaster']);
+            Route::get('exist-stockopname-master', [StockOpnameController::class, 'getStatusStockopnameMaster']);
+            Route::delete('delete-temp-stockopname', [StockOpnameController::class, 'deleteTempStockOpname']);
+            Route::post('detail/select-stock', [StockOpnameController::class, 'select_stock']);
+            Route::get('stockopname-detail', [StockOpnameController::class, 'getStockopnameDetail']);
+            Route::delete('stockopname-detail/{rownum}', [StockOpnameController::class, 'deleteStockOpnameDetail']);
+            Route::post('submit-stockopname', [StockOpnameController::class, 'submit_stockopname']);
+        });
+
+        //prefix
+        Route::group(['prefix' => 'penerimaan-barang'], function () {
+            // persediaan barang
+            Route::get('', [PersediaanBarangController::class, 'datatables_detail']);
+            Route::get('datatables_detail_inventory/{fc_stockcode}', [PersediaanBarangController::class, 'datatables_detail_inventory']);
         });
     // });
 });

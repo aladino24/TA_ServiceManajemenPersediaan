@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockOpnameDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,\Awobaz\Compoships\Compoships;
 
     protected static $logAttributes = ["*"];
 
@@ -23,7 +23,12 @@ class StockOpnameDetail extends Model
     // stockopnamemst
     public function stockopnamemst()
     {
-        return $this->belongsTo(StockOpnameMaster::class, ['fc_membercode','fc_stockopname_no'], ['fc_membercode','fc_stockopname_no']);
+        return $this->belongsTo(StockOpnameMaster::class, 'fc_membercode', 'fc_membercode')->where('fc_stockopname_no', 'fc_stockopname_no');
+    }
+
+    // invstore
+    public function invstore(){
+        return $this->belongsTo(Invstore::class, ['fc_barcode','fc_membercode'], ['fc_barcode','fc_membercode']);
     }
 
 }

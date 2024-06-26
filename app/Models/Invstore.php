@@ -8,7 +8,7 @@ use App\Models\Stock;
 
 class Invstore extends Model
 {
-    use HasFactory;
+    use HasFactory, \Awobaz\Compoships\Compoships;
 
     protected static $logAttributes = ["*"];
 
@@ -33,6 +33,11 @@ class Invstore extends Model
     public function usageDetail()
     {
         return $this->hasMany(UsageDetail::class, 'fc_barcode', 'fc_barcode');
+    }
+
+    public function stockopnameDetail()
+    {
+        return $this->hasMany(StockOpnameDetail::class, ['fc_barcode', 'fc_membercode'], ['fc_barcode', 'fc_membercode']);
     }
     
 
