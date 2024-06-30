@@ -17,7 +17,7 @@ class CheckAuthentication
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
 
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next): Response
     {
         $token = $request->bearerToken();
         if($token && $this->checkAuthentication($token)){
@@ -34,7 +34,7 @@ class CheckAuthentication
     private function checkAuthentication($token){
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get('http://127.0.0.1:8000/api/check-token');
+        ])->get('https://authentication-medichain.my.id/api/check-token');
 
         return $response->status() === 200;
     }
@@ -43,7 +43,7 @@ class CheckAuthentication
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->get('http://127.0.0.1:8000/api/check-token');
+        ])->get('https://authentication-medichain.my.id/api/check-token');
 
         return $response->json();
     }

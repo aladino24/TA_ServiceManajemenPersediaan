@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Helpers\DocNumber;
 use Validator;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class StockOpnameController extends Controller
 {
