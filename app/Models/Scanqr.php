@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Scanqr extends Model
+class ScanQr extends Model
 {
     use HasFactory;
     protected static $logAttributes = ["*"];
